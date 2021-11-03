@@ -104,8 +104,14 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                                   : FontAwesomeIcons.solidHeart,
                               color: red),
                           onPressed: () => hasItem
-                              ? Modular.get<AppDatabase>().removeFavorite(item)
-                              : Modular.get<AppDatabase>().addFavorite(item),
+                              ? BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                                  .add(
+                                  fav.RemoveFavorite(item),
+                                )
+                              : BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                                  .add(
+                                  fav.AddFavorites(item),
+                                ),
                         ),
                       ),
                     );
