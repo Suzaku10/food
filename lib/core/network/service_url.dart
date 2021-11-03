@@ -8,4 +8,6 @@ class ServiceUrl {
   static get _buildApiVersion => '$_type$_version$_key';
 
   static get list => '${_buildApiVersion}search.php?f=a';
+
+  static get details => '${_buildApiVersion}lookup.php';
 }
