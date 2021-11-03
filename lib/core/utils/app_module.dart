@@ -6,6 +6,13 @@ import 'package:food/feature/food/details/domain/repositories/food_details_repos
 import 'package:food/feature/food/details/domain/usecases/fetch_meal_detail.dart';
 import 'package:food/feature/food/details/presentation/bloc/bloc.dart';
 import 'package:food/feature/food/details/presentation/pages/food_detail_page.dart';
+import 'package:food/feature/food/favorite/data/datasources/meal_favorite_local_datasources.dart';
+import 'package:food/feature/food/favorite/data/repositories/food_favorite_repository.dart';
+import 'package:food/feature/food/favorite/domain/repositories/food_favorite_repositories.dart';
+import 'package:food/feature/food/favorite/domain/usecases/add_favorite_to_database.dart';
+import 'package:food/feature/food/favorite/domain/usecases/favorite_from_database.dart';
+import 'package:food/feature/food/favorite/domain/usecases/remove_favorite.dart';
+import 'package:food/feature/food/favorite/presentation/bloc/bloc.dart';
 import 'package:food/feature/food/favorite/presentation/pages/food_favorite_page.dart';
 import 'package:food/feature/food/list/data/datasources/meals_remote_datasources.dart';
 import 'package:food/feature/food/list/data/repositories/food_list_repository_impl.dart';
@@ -31,6 +38,9 @@ class AppModule extends Module {
 
         Bind.lazySingleton<AppDatabase>((i) => AppDatabase()),
 
+        Bind.lazySingleton<MealFavoritesLocalDataSource>(
+            (i) => MealFavoritesLocalDataSourceImpl()),
+
         // repository
         Bind.lazySingleton<FoodListRepository>(
           (i) => FoodListRepositoryImpl(
@@ -44,6 +54,12 @@ class AppModule extends Module {
           ),
         ),
 
+        Bind.lazySingleton<FoodFavoriteRepository>(
+          (i) => FoodFavoriteRepositoryImpl(
+            localDataSource: Modular.get<MealFavoritesLocalDataSource>(),
+          ),
+        ),
+
         // usecase
         Bind.lazySingleton<usecase.FetchMeals>(
           (i) => usecase.FetchMeals(Modular.get<FoodListRepository>()),
@@ -53,6 +69,16 @@ class AppModule extends Module {
           (i) => FetchMealDetail(Modular.get<FoodDetailsRepository>()),
         ),
 
+        Bind.lazySingleton<RemoveFavorites>(
+          (i) => RemoveFavorites(Modular.get<FoodFavoriteRepository>()),
+        ),
+        Bind.lazySingleton<AddFavoriteToDatabase>(
+          (i) => AddFavoriteToDatabase(Modular.get<FoodFavoriteRepository>()),
+        ),
+        Bind.lazySingleton<FavoritesFromDatabase>(
+          (i) => FavoritesFromDatabase(Modular.get<FoodFavoriteRepository>()),
+        ),
+
         // bloc
         Bind.factory<FoodListBloc>(
           (i) => FoodListBloc(meals: Modular.get<usecase.FetchMeals>()),
@@ -60,6 +86,13 @@ class AppModule extends Module {
 
         Bind.factory<FoodDetailBloc>(
           (i) => FoodDetailBloc(detail: Modular.get<FetchMealDetail>()),
+        ),
+
+        Bind.factory<FoodFavoriteBloc>(
+          (i) => FoodFavoriteBloc(
+              meals: Modular.get<FavoritesFromDatabase>(),
+              addFavorite: Modular.get<AddFavoriteToDatabase>(),
+              removeFavorites: Modular.get<RemoveFavorites>()),
         ),
       ];
 
