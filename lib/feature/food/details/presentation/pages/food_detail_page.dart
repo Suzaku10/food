@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food/core/utils/color.dart';
 import 'package:food/core/utils/function.dart';
-import 'package:food/feature/food/details/domain/usecases/fetch_meal_detail.dart';
+import 'package:food/core/utils/moor_helper/moor_helper.dart';
 import 'package:food/feature/food/details/presentation/bloc/bloc.dart';
 import 'package:food/feature/food/details/presentation/bloc/food_detail_bloc.dart';
 import 'package:food/feature/food/list/domain/entities/food.dart';
@@ -87,12 +87,10 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                   decoration:
                       const BoxDecoration(color: white, shape: BoxShape.circle),
                   child: IconButton(
-                      splashColor: red,
-                      icon:
-                          const FaIcon(FontAwesomeIcons.solidHeart, color: red),
-                      onPressed: () {
-                        print("Pressed");
-                      }),
+                    splashColor: red,
+                    icon: const FaIcon(FontAwesomeIcons.solidHeart, color: red),
+                    onPressed: () => Modular.get<AppDatabase>(),
+                  ),
                 ),
               ),
             ],

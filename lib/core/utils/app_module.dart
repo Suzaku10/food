@@ -1,10 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food/core/utils/moor_helper/moor_helper.dart';
 import 'package:food/feature/food/details/data/datasources/meal_detail_remote_datasources.dart';
 import 'package:food/feature/food/details/data/repositories/food_detail_repository_impl.dart';
 import 'package:food/feature/food/details/domain/repositories/food_details_repository.dart';
 import 'package:food/feature/food/details/domain/usecases/fetch_meal_detail.dart';
 import 'package:food/feature/food/details/presentation/bloc/bloc.dart';
 import 'package:food/feature/food/details/presentation/pages/food_detail_page.dart';
+import 'package:food/feature/food/favorite/presentation/pages/food_favorite_page.dart';
 import 'package:food/feature/food/list/data/datasources/meals_remote_datasources.dart';
 import 'package:food/feature/food/list/data/repositories/food_list_repository_impl.dart';
 import 'package:food/feature/food/list/domain/repositories/food_list_repository.dart';
@@ -26,6 +28,8 @@ class AppModule extends Module {
         Bind.lazySingleton<MealDetailRemoteDataSource>(
           (i) => MealDetailRemoteDataSourceImpl(),
         ),
+
+        Bind.lazySingleton<AppDatabase>((i) => AppDatabase()),
 
         // repository
         Bind.lazySingleton<FoodListRepository>(
@@ -70,6 +74,10 @@ class AppModule extends Module {
           child: (context, args) => FoodDetailPage(
             name: args.params['id'],
           ),
+        ),
+        ChildRoute(
+          '/favorites',
+          child: (context, args) => const FoodFavoritePage(),
         ),
       ];
 }
