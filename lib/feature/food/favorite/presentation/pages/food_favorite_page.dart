@@ -32,7 +32,7 @@ class FoodFavoritePage extends StatelessWidget {
               child: CircularProgressIndicator.adaptive(),
             );
           } else if (state is Loaded) {
-            return _mealsWidget(state.favorites);
+            return _mealsWidget(state.favorites, context);
           } else if (state is Error) {
             return const Center(
               child: Text('Error'),
@@ -48,11 +48,11 @@ class FoodFavoritePage extends StatelessWidget {
     );
   }
 
-  Widget _mealsWidget(List<Favorite> meals) {
+  Widget _mealsWidget(List<Favorite> meals, BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: meals.length,
-      itemBuilder: (_, index) => _itemMealWidget(meals[index]),
+      itemBuilder: (_, index) => _itemMealWidget(meals[index], context),
       separatorBuilder: (_, index) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 4),
         child: Divider(color: black),
@@ -60,10 +60,11 @@ class FoodFavoritePage extends StatelessWidget {
     );
   }
 
-  Widget _itemMealWidget(Favorite item) {
+  Widget _itemMealWidget(Favorite item, BuildContext context) {
     return InkWell(
-      onTap: () =>
-          Modular.to.pushNamed('/detail/', arguments: {'id': item.mealId}),
+      onTap: () => Modular.to
+          .pushNamed('/detail/', arguments: {'id': item.mealId}).then((value) =>
+              BlocProvider.of<FoodFavoriteBloc>(context).add(FetchFavorites())),
       child: Container(
         decoration: BoxDecoration(
             color: white,

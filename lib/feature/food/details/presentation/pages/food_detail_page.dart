@@ -85,70 +85,85 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
               ),
               BlocProvider(
                 create: (_) => Modular.get<fav.FoodFavoriteBloc>(),
-                child: BlocBuilder<fav.FoodFavoriteBloc, fav.FoodFavoriteState>(
-                    builder: (context, state) {
-                  if (state is fav.Loaded) {
-                    bool hasItem = state.favorites
-                        .any((element) => element.mealId == item.idMeal);
-                    return Positioned(
-                      top: 16,
-                      right: 16,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: white, shape: BoxShape.circle),
-                        child: IconButton(
-                          splashColor: red,
-                          icon: FaIcon(
-                              hasItem
-                                  ? FontAwesomeIcons.trash
-                                  : FontAwesomeIcons.solidHeart,
-                              color: red),
-                          onPressed: () => hasItem
-                              ? BlocProvider.of<fav.FoodFavoriteBloc>(context)
-                                  .add(
-                                  fav.RemoveFavorite(item),
-                                )
-                              : BlocProvider.of<fav.FoodFavoriteBloc>(context)
-                                  .add(
-                                  fav.AddFavorites(item),
-                                ),
+                child:
+                    BlocListener<fav.FoodFavoriteBloc, fav.FoodFavoriteState>(
+                  listener: (context, state) {
+                    if (state is fav.Success) {
+                      Scaffold.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Success'),
+                          duration: Duration(seconds: 1),
                         ),
-                      ),
-                    );
-                  } else if (state is fav.Success || state is fav.Initial) {
-                    BlocProvider.of<fav.FoodFavoriteBloc>(context)
-                        .add(fav.FetchFavorites());
-                    return Positioned(
-                      top: 16,
-                      right: 16,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: white, shape: BoxShape.circle),
-                        child: IconButton(
-                          splashColor: red,
-                          icon: const FaIcon(FontAwesomeIcons.solidHeart,
-                              color: red),
-                          onPressed: () => null,
+                      );
+                    }
+                  },
+                  child:
+                      BlocBuilder<fav.FoodFavoriteBloc, fav.FoodFavoriteState>(
+                          builder: (context, state) {
+                    if (state is fav.Loaded) {
+                      bool hasItem = state.favorites
+                          .any((element) => element.mealId == item.idMeal);
+                      return Positioned(
+                        top: 16,
+                        right: 16,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: white, shape: BoxShape.circle),
+                          child: IconButton(
+                            splashColor: red,
+                            icon: FaIcon(
+                                hasItem
+                                    ? FontAwesomeIcons.trash
+                                    : FontAwesomeIcons.solidHeart,
+                                color: red),
+                            onPressed: () => hasItem
+                                ? BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                                    .add(
+                                    fav.RemoveFavorite(item),
+                                  )
+                                : BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                                    .add(
+                                    fav.AddFavorites(item),
+                                  ),
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return Positioned(
-                      top: 16,
-                      right: 16,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: white, shape: BoxShape.circle),
-                        child: IconButton(
-                          splashColor: red,
-                          icon: const FaIcon(FontAwesomeIcons.solidHeart,
-                              color: red),
-                          onPressed: () => null,
+                      );
+                    } else if (state is fav.Success || state is fav.Initial) {
+                      BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                          .add(fav.FetchFavorites());
+                      return Positioned(
+                        top: 16,
+                        right: 16,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: white, shape: BoxShape.circle),
+                          child: IconButton(
+                            splashColor: red,
+                            icon: const FaIcon(FontAwesomeIcons.solidHeart,
+                                color: red),
+                            onPressed: () => null,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                }),
+                      );
+                    } else {
+                      return Positioned(
+                        top: 16,
+                        right: 16,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: white, shape: BoxShape.circle),
+                          child: IconButton(
+                            splashColor: red,
+                            icon: const FaIcon(FontAwesomeIcons.solidHeart,
+                                color: red),
+                            onPressed: () => null,
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+                ),
               )
             ],
           ),

@@ -2,7 +2,7 @@ import 'dart:math';
 
 String generateRandomString() {
   var r = Random.secure();
-  const _chars = 'abcdefghijklmnopqrst';
+  const _chars = 'abcdefhijklmnopqrst';
   return _chars[r.nextInt(_chars.length)];
 }
 
