@@ -21,6 +21,7 @@ dependencies:
   flutter_modular: ^4.2.0
   moor: ^4.6.1+1
   json_annotation: ^4.3.0
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:
@@ -32,3 +33,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
