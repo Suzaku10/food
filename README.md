@@ -5,8 +5,9 @@ Sinarmas Insurance Test
 ## Getting Started
 This Project :
 - Using Flutter version 2.5.1 and Dart 2.14.2
-- Using Mobx as State Management
-- Have unit testing
+- Using Bloc as State Management
+- Using Moor as Local Storage
+- Using Modular as DI and Route Management
 - Android real device(Asus Zenfone Max Pro 1/Android version(9)
 
 ## How To Run
