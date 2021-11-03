@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:food/core/error/exceptions.dart';
 import 'package:food/core/error/failures.dart';
 import 'package:food/feature/food/list/data/datasources/meals_remote_datasources.dart';
@@ -23,7 +22,6 @@ class FoodListRepositoryImpl implements FoodListRepository {
     } on TimeoutException {
       return Left(TimeoutFailure());
     } catch (e) {
-      debugPrint('print => $e');
       return Left(OtherFailure());
     }
   }

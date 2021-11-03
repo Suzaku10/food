@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food/feature/food/details/presentation/pages/food_detail_page.dart';
 import 'package:food/feature/food/list/data/datasources/meals_remote_datasources.dart';
 import 'package:food/feature/food/list/data/repositories/food_list_repository_impl.dart';
 import 'package:food/feature/food/list/domain/repositories/food_list_repository.dart';
@@ -43,7 +44,9 @@ class AppModule extends Module {
         ),
         ChildRoute(
           '/detail/:id',
-          child: (context, args) => const FoodListPage(),
+          child: (context, args) => FoodDetailPage(
+            name: args.params['id'],
+          ),
         ),
       ];
 }

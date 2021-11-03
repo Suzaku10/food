@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food/core/utils/color.dart';
@@ -68,48 +69,66 @@ class _FoodListPageState extends State<FoodListPage> {
   }
 
   Widget _itemMealWidget(Food item) {
-    return Container(
-      decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-                offset: Offset(0, 0),
-                color: red,
-                blurRadius: 2,
-                spreadRadius: 2)
-          ]),
-      padding: const EdgeInsets.only(left: 16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.strMeal ?? '',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+    return InkWell(
+      onTap: () =>
+          Modular.to.pushNamed('/detail/', arguments: {'id': item.idMeal}),
+      child: Container(
+        decoration: BoxDecoration(
+            color: white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0, 0),
+                  color: red,
+                  blurRadius: 2,
+                  spreadRadius: 2)
+            ]),
+        padding: const EdgeInsets.only(left: 16),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.strMeal ?? '',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text('${item.strArea ?? ''} | ${item.strCategory ?? ''}'),
+                  ],
+                ),
+              ),
+            ),
+            if (item.strMealThumb != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                child: ClipOval(
+                  child: Image.network(
+                    '${(item.strMealThumb ?? '')}/preview',
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.fill,
+                    errorBuilder: (_, __, ___) => Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: black),
+                          color: white,
+                          shape: BoxShape.circle),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'No Image Found',
+                        textAlign: TextAlign.center,
+                      ),
+                      height: 100,
+                      width: 100,
+                    ),
                   ),
-                  Text('${item.strArea ?? ''} | ${item.strCategory ?? ''}'),
-                ],
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-            child: ClipOval(
-              child: Image.network(
-                '${(item.strMealThumb ?? '')}/preview',
-                width: 100,
-                height: 100,
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
