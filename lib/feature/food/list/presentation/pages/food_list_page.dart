@@ -20,7 +20,7 @@ class _FoodListPageState extends State<FoodListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hello'),
+        title: const Text('Meals'),
       ),
       body: _body(context),
     );

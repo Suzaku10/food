@@ -3,5 +3,5 @@ import 'package:food/core/error/failures.dart';
 import 'package:food/feature/food/list/domain/entities/food.dart';
 
 abstract class FoodDetailsRepository {
-  Future<Either<Failure, List<Food>>> fetchDetailById(String id);
+  Future<Either<Failure, Food>> fetchDetailById(String id);
 }

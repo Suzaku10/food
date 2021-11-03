@@ -6,12 +6,14 @@ abstract class MealDetailRemoteDataSource {
   Future<FoodResponseModel> fetchDetailById(String id);
 }
 
-class MealsRemoteDataSourceImpl extends BaseServiceDio
+class MealDetailRemoteDataSourceImpl extends BaseServiceDio
     implements MealDetailRemoteDataSource {
   @override
   Future<FoodResponseModel> fetchDetailById(String id) async {
     try {
-      final response = await service.get(ServiceUrl.details);
+      Map<String, dynamic> param = {'i': id};
+      final response =
+          await service.get(ServiceUrl.details, queryParameters: param);
       return FoodResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

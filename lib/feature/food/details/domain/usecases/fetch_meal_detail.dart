@@ -4,13 +4,13 @@ import 'package:food/core/usecases/usecase.dart';
 import 'package:food/feature/food/details/domain/repositories/food_details_repository.dart';
 import 'package:food/feature/food/list/domain/entities/food.dart';
 
-class FetchMealDetail implements UseCase<List<Food>, IdMealParams> {
+class FetchMealDetail implements UseCase<Food, IdMealParams> {
   final FoodDetailsRepository repository;
 
   FetchMealDetail(this.repository);
 
   @override
-  Future<Either<Failure, List<Food>>> call(IdMealParams params) async {
+  Future<Either<Failure, Food>> call(IdMealParams params) async {
     return await repository.fetchDetailById(params.id!);
   }
 }
