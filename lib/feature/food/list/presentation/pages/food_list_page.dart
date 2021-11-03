@@ -25,7 +25,7 @@ class _FoodListPageState extends State<FoodListPage> {
         actions: [
           IconButton(
               onPressed: () => Modular.to.pushNamed('/favorites'),
-              icon: const FaIcon(FontAwesomeIcons.grinHearts)),
+              icon: const FaIcon(FontAwesomeIcons.heart)),
         ],
       ),
       body: _body(context),
