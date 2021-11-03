@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food/core/utils/color.dart';
 import 'package:food/feature/food/list/domain/entities/food.dart';
 import 'package:food/feature/food/list/presentation/bloc/bloc.dart';
@@ -21,6 +22,11 @@ class _FoodListPageState extends State<FoodListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meals'),
+        actions: [
+          IconButton(
+              onPressed: () => Modular.to.pushNamed('/favorites'),
+              icon: const FaIcon(FontAwesomeIcons.grinHearts)),
+        ],
       ),
       body: _body(context),
     );

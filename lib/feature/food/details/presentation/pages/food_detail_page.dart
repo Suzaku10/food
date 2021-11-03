@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -7,6 +9,7 @@ import 'package:food/core/utils/function.dart';
 import 'package:food/core/utils/moor_helper/moor_helper.dart';
 import 'package:food/feature/food/details/presentation/bloc/bloc.dart';
 import 'package:food/feature/food/details/presentation/bloc/food_detail_bloc.dart';
+import 'package:food/feature/food/favorite/presentation/bloc/bloc.dart' as fav;
 import 'package:food/feature/food/list/domain/entities/food.dart';
 
 class FoodDetailPage extends StatefulWidget {
@@ -80,19 +83,67 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                   fallbackWidth: double.infinity,
                 ),
               ),
-              Positioned(
-                top: 16,
-                right: 16,
-                child: Container(
-                  decoration:
-                      const BoxDecoration(color: white, shape: BoxShape.circle),
-                  child: IconButton(
-                    splashColor: red,
-                    icon: const FaIcon(FontAwesomeIcons.solidHeart, color: red),
-                    onPressed: () => Modular.get<AppDatabase>(),
-                  ),
-                ),
-              ),
+              BlocProvider(
+                create: (_) => Modular.get<fav.FoodFavoriteBloc>(),
+                child: BlocBuilder<fav.FoodFavoriteBloc, fav.FoodFavoriteState>(
+                    builder: (context, state) {
+                  if (state is fav.Loaded) {
+                    bool hasItem = state.favorites
+                        .any((element) => element.mealId == item.idMeal);
+                    return Positioned(
+                      top: 16,
+                      right: 16,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: white, shape: BoxShape.circle),
+                        child: IconButton(
+                          splashColor: red,
+                          icon: FaIcon(
+                              hasItem
+                                  ? FontAwesomeIcons.trash
+                                  : FontAwesomeIcons.solidHeart,
+                              color: red),
+                          onPressed: () => hasItem
+                              ? Modular.get<AppDatabase>().removeFavorite(item)
+                              : Modular.get<AppDatabase>().addFavorite(item),
+                        ),
+                      ),
+                    );
+                  } else if (state is fav.Success || state is fav.Initial) {
+                    BlocProvider.of<fav.FoodFavoriteBloc>(context)
+                        .add(fav.FetchFavorites());
+                    return Positioned(
+                      top: 16,
+                      right: 16,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: white, shape: BoxShape.circle),
+                        child: IconButton(
+                          splashColor: red,
+                          icon: const FaIcon(FontAwesomeIcons.solidHeart,
+                              color: red),
+                          onPressed: () => null,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Positioned(
+                      top: 16,
+                      right: 16,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: white, shape: BoxShape.circle),
+                        child: IconButton(
+                          splashColor: red,
+                          icon: const FaIcon(FontAwesomeIcons.solidHeart,
+                              color: red),
+                          onPressed: () => null,
+                        ),
+                      ),
+                    );
+                  }
+                }),
+              )
             ],
           ),
           Text(
