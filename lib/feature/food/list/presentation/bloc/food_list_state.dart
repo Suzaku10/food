@@ -8,6 +8,8 @@ abstract class FoodListState extends Equatable {
   List<Object?> get props => [];
 }
 
+class Initial extends FoodListState {}
+
 class Empty extends FoodListState {}
 
 class Loading extends FoodListState {}

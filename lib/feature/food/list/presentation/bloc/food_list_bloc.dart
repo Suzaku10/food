@@ -13,11 +13,11 @@ class FoodListBloc extends Bloc<FoodListEvent, FoodListState> {
   FoodListBloc({
     required usecase.FetchMeals meals,
   })  : fetchMeals = meals,
-        super(Empty());
+        super(Initial());
 
   @override
   Stream<FoodListState> mapEventToState(FoodListEvent event) async* {
-    if (event is usecase.FetchMeals) {
+    if (event is FetchMeals) {
       yield Loading();
       final fetchData = await fetchMeals(NoParams());
       yield* _eitherLoadedOrErrorState(fetchData);

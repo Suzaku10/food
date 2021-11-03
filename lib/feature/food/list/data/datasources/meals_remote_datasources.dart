@@ -1,4 +1,3 @@
-import 'package:food/core/error/exceptions.dart';
 import 'package:food/core/network/base_dio_service.dart';
 import 'package:food/core/network/service_url.dart';
 import 'package:food/feature/food/list/data/models/meals_response/meal_response.dart';
